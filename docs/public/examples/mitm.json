@@ -1,0 +1,14 @@
+{
+  "experimental": {
+    "mitm": {
+      "enabled": true,
+      "hosts": [
+        "api.example.test"
+      ],
+      "tcp": false,
+      "h2": false,
+      "skip_server_cert_verify": false,
+      "block_quic": true
+    }
+  }
+}

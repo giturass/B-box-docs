@@ -1,0 +1,30 @@
+{
+  "experimental": {
+    "scripts": {
+      "enabled": true,
+      "http": [
+        {
+          "name": "Dynamic Mock",
+          "pattern": "^https?://api\\.example\\.test/dynamic$",
+          "phase": "request",
+          "timeout_ms": 5000,
+          "source": "$done({\n  response: {\n    status: 200,\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ ok: true, method: $request.method, source: \"B-box script\" })\n  }\n});"
+        },
+        {
+          "name": "Edit response JSON",
+          "pattern": "^https?://api\\.example\\.test/profile(?:\\?.*)?$",
+          "phase": "response",
+          "requires_body": true,
+          "timeout_ms": 5000,
+          "resource": "response.js"
+        }
+      ],
+      "resources": {
+        "response.js": {
+          "data_type": "text",
+          "data": "let body;\ntry {\n  body = JSON.parse($response.body);\n} catch (error) {\n  console.warn(\"Response is not JSON:\", String(error));\n  $done();\n}\nif (body === null || typeof body !== \"object\" || Array.isArray(body)) {\n  $done();\n}\nbody.debug = true;\nbody.source = \"B-box\";\n$done({ body: JSON.stringify(body) });"
+        }
+      }
+    }
+  }
+}

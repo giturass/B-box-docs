@@ -1,0 +1,56 @@
+{
+  "experimental": {
+    "http_rewrite": {
+      "enabled": true,
+      "header_rewrite": [
+        {
+          "name": "Add request header",
+          "pattern": "^https?://api\\.example\\.test/",
+          "phase": "request",
+          "operation": "add",
+          "header": "X-Debug",
+          "value": "B-box"
+        }
+      ],
+      "url_rewrite": [
+        {
+          "name": "Temporary redirect",
+          "pattern": "^https?://api\\.example\\.test/old$",
+          "action": "307",
+          "replacement": "https://api.example.test/new"
+        }
+      ],
+      "map_remote": [
+        {
+          "name": "Use staging",
+          "pattern": "^https?://api\\.example\\.test/staging/(.*)$",
+          "replacement": "https://backend.example.test/$1",
+          "preserve_host": false
+        }
+      ],
+      "body_rewrite": [
+        {
+          "name": "Set JSON field",
+          "pattern": "^https?://api\\.example\\.test/profile(?:\\?.*)?$",
+          "phase": "response",
+          "jq": ".debug = true"
+        }
+      ],
+      "map_local": [
+        {
+          "name": "Local mock",
+          "pattern": "^https?://api\\.example\\.test/mock$",
+          "status": 200,
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "data_type": "text",
+          "data": "{\"ok\":true,\"source\":\"Map Local\"}"
+        }
+      ]
+    }
+  }
+}

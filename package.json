@@ -1,0 +1,21 @@
+{
+  "name": "b-box-docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "B-box 中文指南：MITM、HTTP 改写与 JavaScript 脚本",
+  "scripts": {
+    "docs:dev": "vitepress docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs --host 127.0.0.1",
+    "check:docs": "python3 tools/check_docs.py",
+    "test:site": "playwright test"
+  },
+  "devDependencies": {
+    "vitepress": "1.6.4",
+    "@playwright/test": "1.56.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

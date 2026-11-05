@@ -1,0 +1,19 @@
+B-box 使用指南
+
+Copyright (C) 2026 giturass and contributors
+SPDX-License-Identifier: GPL-3.0-or-later
+
+Documentation and examples describe B-box and are based on its published
+documentation and source at commit 4aba1933bbfea72bca42ee760a53de068c8fbeae:
+https://github.com/giturass/B-box
+
+B-box is derived from sing-box-for-android. The upstream notices include:
+Copyright (C) 2022 nekohasekai <contact-sagernet@sekai.icu>
+
+sing-box, sing-box-for-android, FlClash, prism_ui and Surge are the names of
+their respective projects. This documentation does not represent their
+official documentation or imply endorsement by their maintainers.
+
+VitePress and Playwright are distributed separately under their own licenses.
+The website symbol and page styling in this repository are created for this
+guide and do not reproduce an upstream application's logo.

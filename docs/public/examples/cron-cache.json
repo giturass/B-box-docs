@@ -1,0 +1,37 @@
+{
+  "experimental": {
+    "scripts": {
+      "enabled": true,
+      "http": [
+        {
+          "name": "Read cached JSON",
+          "pattern": "^https?://api\\.example\\.test/cached$",
+          "phase": "request",
+          "storage_namespace": "docs-demo",
+          "http_client": {
+            "allowed_origins": []
+          },
+          "source": "const cached = $persistentStore.read(\"latest\");\nif (cached === null) {\n  $done();\n}\n$done({\n  response: {\n    status: 200,\n    headers: { \"Content-Type\": \"application/json\" },\n    body: cached\n  }\n});"
+        }
+      ],
+      "cron": [
+        {
+          "name": "Refresh cached JSON",
+          "cron": "*/30 * * * *",
+          "timezone": "Asia/Shanghai",
+          "timeout_ms": 5000,
+          "storage_namespace": "docs-demo",
+          "argument": "https://api.example.test/status",
+          "http_client": {
+            "allowed_origins": [
+              "https://api.example.test"
+            ],
+            "max_requests": 1,
+            "max_body_bytes": 8192
+          },
+          "source": "$httpClient.get({ url: $argument, timeout: 4 }, function (error, response, data) {\n  if (error || response.status !== 200) {\n    console.warn(\"Update failed:\", error || response.status);\n    $done();\n  }\n  if (!$persistentStore.write(data, \"latest\")) {\n    console.warn(\"Could not save latest response\");\n    $done();\n  }\n  console.log(\"Updated latest response\");\n  $done();\n});"
+        }
+      ]
+    }
+  }
+}
