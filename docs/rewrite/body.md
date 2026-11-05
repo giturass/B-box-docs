@@ -35,8 +35,8 @@ HTTPS 需要配置独立 MITM。上游返回 `{"debug":false}` 时，预期客�
 | 设置字段 | `.debug = true` |
 | 修改嵌套字段 | `.data.mode = "test"` |
 | 删除字段 | `del(.debug)` |
-| 修改数组项 | `.items |= map(.enabled = true)` |
-| 组合多步 | `del(.debug) | .source = "B-box"` |
+| 修改数组项 | `.items \|= map(.enabled = true)` |
+| 组合多步 | `del(.debug) \| .source = "B-box"` |
 
 jq 接收完整 JSON 值，支持对象、数组和其他 JSON 类型，并保留大整数。多个输出用换行连接；`empty` 等无输出表达式保持原文，不会把正文变为空字符串。
 

@@ -14,7 +14,7 @@ B-box 的独立中文文档站，重点介绍 HTTPS MITM、请求记录、HTTP �
 - Termux 本机只执行 `python3 tools/check_docs.py` 和 `git diff --check` 等静态检查；构建在 Actions 完成。
 - 站内中文搜索在浏览器运行，无需外部搜索服务。站点不加载统计脚本或外部字体。
 
-初次部署工作流可在缺少 `package-lock.json` 时生成依赖锁，并以 `dependency-lock` artifact 提供；锁文件提交后使用 `npm ci`。
+依赖由 `package-lock.json` 固定，工作流使用 `npm ci` 安装。升级依赖时同步更新锁文件，并通过远端检查。
 
 ## 来源与许可
 

@@ -100,6 +100,6 @@ description: 使用 URL Rewrite 透明改写、返回重定向或拒绝请求，
 
 ## 网关模板
 
-302/307 的 `replacement` 支持 `{{{GATEWAY_ADDRESS}}}`，用于运行中核心的默认接口网关，IPv6 会加方括号。没有可用网关时跳过该规则。
+302/307 的 `replacement` 支持 <code v-pre>{{{GATEWAY_ADDRESS}}}</code>，用于运行中核心的默认接口网关，IPv6 会加方括号。没有可用网关时跳过该规则。
 
 这是重定向模板的特定能力，不是任意 JSON 字段都支持的变量系统。
