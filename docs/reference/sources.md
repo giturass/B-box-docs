@@ -60,6 +60,8 @@ description: B-box 指南的固定源码版本、功能依据、上游官方资�
 
 源码仓库：[giturass/B-box-docs](https://github.com/giturass/B-box-docs)。本站用 VitePress 1.6.4，中文搜索在浏览器本地运行。
 
+站标与浏览器标签页图标使用 B-box 的[应用启动器图标](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)，原样保存为 `docs/public/b-box.png`。
+
 推送 `main` 后，GitHub Actions 检查 Markdown/示例引用，分别构建 GitHub Pages 子路径和 Vercel 根路径，并在手机与桌面浏览器中检查导航、搜索和下载。检查通过后部署 GitHub Pages；Vercel 可直接导入仓库部署。
 
 操作步骤、域名设置与官方部署依据见[部署文档站](./deployment.md)。

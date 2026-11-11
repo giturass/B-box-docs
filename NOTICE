@@ -15,5 +15,7 @@ their respective projects. This documentation does not represent their
 official documentation or imply endorsement by their maintainers.
 
 VitePress and Playwright are distributed separately under their own licenses.
-The website symbol and page styling in this repository are created for this
-guide and do not reproduce an upstream application's logo.
+The B-box application icon in docs/public/b-box.png is copied unchanged
+from app/src/main/res/mipmap-xxxhdpi/ic_launcher.png at the B-box commit
+identified above. It is used as the site logo and favicon.
+Page styling in this repository is created for this guide.

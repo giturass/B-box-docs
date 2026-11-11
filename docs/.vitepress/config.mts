@@ -12,7 +12,7 @@ export default defineConfig({
   lastUpdated: true,
   sitemap: noIndex ? undefined : { hostname: origin + base },
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: base + 'favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '192x192', href: base + 'b-box.png' }],
     ['meta', { name: 'theme-color', content: '#0969da', media: '(prefers-color-scheme: light)' }],
     ['meta', { name: 'theme-color', content: '#1f6feb', media: '(prefers-color-scheme: dark)' }],
     ['meta', { property: 'og:locale', content: 'zh_CN' }],
@@ -34,7 +34,7 @@ export default defineConfig({
     lineNumbers: false,
   },
   themeConfig: {
-    logo: '/favicon.svg',
+    logo: { src: '/b-box.png', alt: 'B-box' },
     siteTitle: 'B-box / 指南',
     nav: [
       { text: '开始使用', link: '/guide/quick-start', activeMatch: '/guide/' },

@@ -40,7 +40,7 @@
   --guide-button-hover: #0969da;
 }
 .VPNavBarTitle .title { font-weight: 750; letter-spacing: -.4px; }
-.VPNavBarTitle .logo { height: 30px; }
+.VPNavBarTitle .logo { width: 30px; height: 30px; border-radius: 7px; }
 .VPSidebarItem.level-0 > .item .text { letter-spacing: .02em; }
 .vp-doc h1 { line-height: 1.45; letter-spacing: -.035em; }
 .vp-doc h2 { letter-spacing: -.02em; }
