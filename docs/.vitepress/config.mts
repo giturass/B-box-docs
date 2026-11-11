@@ -77,7 +77,6 @@ export default defineConfig({
         { text: '兼容性说明', link: '/reference/compatibility' },
         { text: '常见问题与排错', link: '/reference/troubleshooting' },
         { text: '资料来源与版本', link: '/reference/sources' },
-        { text: '部署文档站', link: '/reference/deployment' },
       ] },
     ],
     socialLinks: [{ icon: 'github', link: 'https://github.com/giturass/B-box-docs', ariaLabel: '文档源码' }],

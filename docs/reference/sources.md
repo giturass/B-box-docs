@@ -64,6 +64,4 @@ description: B-box 指南的固定源码版本、功能依据、上游官方资�
 
 推送 `main` 后，GitHub Actions 检查 Markdown/示例引用，分别构建 GitHub Pages 子路径和 Vercel 根路径，并在手机与桌面浏览器中检查导航、搜索和下载。检查通过后部署 GitHub Pages；Vercel 可直接导入仓库部署。
 
-操作步骤、域名设置与官方部署依据见[部署文档站](./deployment.md)。
-
 页面底部的“文档更新”表示该页在文档仓库的编辑时间，不能据此推断 App 功能刚刚被验证。内容基线始终以上方表格为准。
