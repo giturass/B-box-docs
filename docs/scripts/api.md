@@ -1,5 +1,5 @@
 ---
-description: B-box 脚本宿主 API 参考，包括上下文、$done、$httpClient、联网限制、policy、定时器和日志。
+description: B-box 脚本宿主 API 参考，包括上下文、$done、$httpClient、$utils.ungzip、联网限制、定时器和日志。
 ---
 
 # 脚本 API
@@ -10,15 +10,14 @@ description: B-box 脚本宿主 API 参考，包括上下文、$done、$httpClie
 
 | 对象 / 接口 | 内容 |
 | --- | --- |
-| `$request` | `url`、`method`、`headers`、`id`；请求阶段且 `requires_body: true` 才有 `body` |
-| `$response` | 响应阶段的 `status`、`headers`；`requires_body: true` 才有 `body` |
-| `$argument` | 规则的 `argument` 字符串 |
-| `$script` | `name`、`type`、`binaryBodyMode`、`startTime`；时间单位为 Unix 秒 |
+| `$request` | `url`、`method`、`headers`、`id`；请求阶段、`requires_body: true` 且正文非空时才有 `body` |
+| `$response` | 响应阶段的 `status`、`headers`；`requires_body: true` 且正文非空时才有 `body` |
+| `$argument` | 非空的 `argument` 字符串；未配置或为空时不注入这个全局 |
+| `$script` | `name`、`type`、`binaryBodyMode`、`startTime`、`sessionID`；时间单位为 Unix 秒，sessionID 每次执行独立生成 |
 | `$cronexp` | Cron 原表达式，仅 Cron 可用 |
-| `$trigger` | Cron 中为 `cron` |
 | `$done()` / `$done({})` | 保持当前报文并结束；带对象时提交相应结果 |
 
-`$script.type` 为 `http-request`、`http-response` 或 `cron`。响应阶段的 `$request` 不包含上传正文；Cron 不提供 `$request` / `$response`。
+`$script.type` 为 `http-request`、`http-response` 或 `cron`。响应阶段的 `$request` 不包含上传正文；Cron 不提供 `$request` / `$response`，HTTP 与 Cron 都不注入 `$trigger`。可用 `typeof $argument === "undefined"` 检查缺省参数。
 
 ## `$httpClient`
 
@@ -53,8 +52,8 @@ HTTP 4xx/5xx 是已收到的 HTTP 响应；需要脚本自己检查 `response.st
 | `url` | 必须是 HTTP(S) URL |
 | `headers` | 对象或 `{field,value}` 数组 |
 | `body` | 字符串、JSON 对象/数组或 TypedArray 子视图；对象自动序列化，并在缺少时设置 JSON Content-Type |
-| `timeout` | 秒，默认 5，最大 86400，仍受脚本总时限约束 |
-| `auto-redirect` | 默认 true，最多 10 次重定向 |
+| `timeout` | 秒，默认 5；接受可表示为 duration 的正数，`-1` 不增加期限，仍受脚本总时限约束 |
+| `auto-redirect` | 默认 true，检测重定向循环，不设固定跳数配额 |
 | `auto-cookie` | 默认 true，Cookie 仅在本次脚本执行内共享 |
 | `binary-mode` | 默认 false，开启后 `data` 为 Uint8Array |
 | `full-header-mode` | 默认 false，开启后响应头以 `{field,value}` 数组保留重复字段 |
@@ -89,11 +88,11 @@ HTTP 4xx/5xx 是已收到的 HTTP 响应；需要脚本自己检查 `response.st
 | --- | --- |
 | 省略或 `null` | 允许经核心主动访问 HTTP(S) |
 | `[]` | 禁止主动联网 |
-| 精确 origin 列表 | 只允许列出的协议、主机和端口，最多 16 项 |
+| 精确 origin 列表 | 只允许列出的协议、主机和端口，不设条数配额 |
 
 不能使用通配符、路径、凭据、查询或片段；每次重定向也会检查范围。`https://api.example.test` 与 `http://api.example.test` 是不同 origin。
 
-每次执行最多并发 20 个主动请求。默认不限制累计调用数；设置正整数 `max_requests` 后，失败和被拒绝的调用也计数。客户端正文默认与最大均为 32 MiB，可调小，和拦截正文限额独立。
+主动 HTTP 不设固定并发或累计调用配额；设置正整数 `max_requests` 后，失败和被拒绝的调用也计数。客户端 `max_body_bytes` 缺省、`0` 或 `-1` 不限制，正整数按字节限制输入和输出，和拦截正文限额独立。
 
 响应按 Content-Encoding 解码；损坏、未知编码、超限或非 UTF-8（未设 binary-mode）会报错，不返回部分正文。
 
@@ -105,7 +104,22 @@ const saved = $persistentStore.write("hello", "latest");
 const removed = $persistentStore.write(null, "latest");
 ```
 
-读不到返回 `null`；写入/删除成功返回 `true`。数据隔离和配额见[持久存储](./storage.md)。
+读不到返回 `null`；写入/删除成功返回 `true`。命名空间和并发行为见[持久存储](./storage.md)。
+
+## gzip 解压工具
+
+HTTP 和 Cron 都可调用 `$utils.ungzip(Uint8Array)`，支持 TypedArray 子视图。成功返回 `Uint8Array`；参数无效、gzip 损坏或执行取消时返回 `null`。
+
+```js
+// HTTP 规则需 requires_body: true 和 binary_body: true。
+const decoded = $utils.ungzip($response.body);
+if (decoded !== null) {
+  console.log("Decoded bytes:", decoded.length);
+}
+$done();
+```
+
+这个工具用于正文内部仍是 gzip 字节的场景，不需要再解压 HTTP `Content-Encoding` 已处理的内容。它不设固定输出配额，也不会自动解析 Protobuf；gRPC 的使用方式见[消息帧说明](./grpc.md#脚本拿到的是什么)。
 
 ## 定时器
 
@@ -118,13 +132,13 @@ setTimeout(function () {
 }, 100);
 ```
 
-回调必须是函数；delay 默认 0，范围 0～86400000 毫秒，实际最小 1 毫秒。最多 64 个待执行定时器。网络与定时器回调在同次 VM 事件循环中顺序执行。
+回调必须是函数；delay 默认 0，接受可表示为 duration 的非负有限毫秒数，实际最小调度间隔为 1 毫秒。待执行定时器与累计回调不设固定次数配额。网络与定时器回调在同次 VM 事件循环中顺序执行。
 
 定时器不延长脚本时限，不跨执行或重启保存，也不会唤醒系统。周期任务请使用 [Cron](./cron.md)，不要用长时间 `setInterval` 代替。
 
 ## 日志
 
-支持 `console.log/info/warn/error/debug`。`log` 按 info 等级写入服务日志；每次脚本最多 10 条，每条最多 2 KiB。可用规则 `name` 帮助识别来源。
+支持 `console.log/info/warn/error/debug`。`log` 按 info 等级写入服务日志，不设每次执行的条数或单条截断配额。可用规则 `name` 帮助识别来源；HTTP 规则设 `debug: true` 时，同一日志内容还会附到请求备注。
 
 没有独立脚本日志页面，使用 B-box 的服务日志，核对配置日志等级和页面筛选条件。
 

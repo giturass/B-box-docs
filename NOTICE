@@ -4,7 +4,7 @@ Copyright (C) 2026 giturass and contributors
 SPDX-License-Identifier: GPL-3.0-or-later
 
 Documentation and examples describe B-box and are based on its published
-documentation and source at commit 4aba1933bbfea72bca42ee760a53de068c8fbeae:
+documentation and source at commit 1006e00e2b24bd369b8c3f5ab08f057c192d8aae:
 https://github.com/giturass/B-box
 
 B-box is derived from sing-box-for-android. The upstream notices include:

@@ -62,11 +62,11 @@ Cron 按日历表达式触发 JavaScript。它属于 `experimental.scripts.cron`
 
 [下载 Cron 与 HTTP 共享缓存示例](/examples/cron-cache.json)。这个片段每半小时获取测试 API，并让匹配 `/cached` 的请求脚本返回缓存。使用前替换域名、`argument` 和 `allowed_origins`，并配置相应 HTTPS MITM。
 
-## 队列与重复到期
+## 并发与重复到期
 
-Cron 使用两个 worker，任务按配置顺序进入有界 FIFO。同一个任务已经排队或运行时，重复到期会跳过并记录日志，不会无限叠加。
+不同到期任务独立启动，不经过固定 worker 配额或 FIFO 队列。同一任务仍在运行时，重复到期会跳过并记录日志，避免自身重叠。
 
-排队期间不占用执行时限，出队才开始计时。服务重载或停止会取消在途任务、丢弃队列，并等待 worker 退出。启停请求记录不会重置 Cron。
+执行时限默认 5000 毫秒，`timeout_ms: -1` 不增加期限，但服务重载或停止仍会取消在途任务并等待退出。启停请求记录不会重置 Cron。
 
 ## 容易漏掉的条件
 
@@ -74,6 +74,6 @@ Cron 使用两个 worker，任务按配置顺序进入有界 FIFO。同一个任
 - 外部脚本加载也计入执行时限；首次下载可能比缓存命中慢。
 - 脚本各条路径都必须 `$done()`，只写日志也不例外。
 - `allowed_origins: []` 会禁止主动联网；这是示例心跳任务的刻意设置。
-- Cron 没有 `$request` 或 `$response`，用 `$argument` 和存储传递数据。
+- Cron 没有 `$request`、`$response` 或 `$trigger`；`$cronexp` 提供表达式，非空 `$argument` 和存储用于传递数据。
 
 继续：[持久存储与共享数据](./storage.md)。

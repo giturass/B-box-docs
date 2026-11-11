@@ -71,7 +71,7 @@ for page in pages:
         if not (DOCS / snippet[2:]).is_file():
             errors.append(f"{page.relative_to(ROOT)}: missing snippet {snippet}")
 
-for fixture in (DOCS / "public/examples").glob("*.json"):
+for fixture in [ROOT / "vercel.json", ROOT / "package.json", *(DOCS / "public/examples").glob("*.json")]:
     check_json(fixture.read_text(encoding="utf-8"), str(fixture.relative_to(ROOT)))
 
 for source in [DOCS / ".vitepress/config.mts", DOCS / ".vitepress/theme/GuideHome.vue"]:
@@ -80,10 +80,12 @@ for source in [DOCS / ".vitepress/config.mts", DOCS / ".vitepress/theme/GuideHom
 
 script_data = json.loads((DOCS / "public/examples/http-scripts.json").read_text())
 cron_data = json.loads((DOCS / "public/examples/cron-cache.json").read_text())
+grpc_data = json.loads((DOCS / "public/examples/grpc-scripts.json").read_text())
 mirrors = {
     "response.js": script_data["experimental"]["scripts"]["resources"]["response.js"]["data"],
     "dynamic-mock.js": script_data["experimental"]["scripts"]["http"][0]["source"],
     "cron-cache.js": cron_data["experimental"]["scripts"]["cron"][0]["source"],
+    "grpc-unary.js": grpc_data["experimental"]["scripts"]["resources"]["grpc-unary.js"]["data"],
 }
 for filename, embedded in mirrors.items():
     readable = (DOCS / "public/examples" / filename).read_text().strip()

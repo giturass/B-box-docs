@@ -1,0 +1,19 @@
+{
+  "experimental": {
+    "http_rewrite": {
+      "enabled": true,
+      "url_rewrite": [
+        {
+          "name": "Empty success response",
+          "pattern": "^https?://api\\.example\\.test/empty$",
+          "action": "reject-200"
+        },
+        {
+          "name": "Empty JSON response",
+          "pattern": "^https?://api\\.example\\.test/empty-json$",
+          "action": "reject-dict"
+        }
+      ]
+    }
+  }
+}

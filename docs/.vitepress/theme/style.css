@@ -1,15 +1,20 @@
 :root {
-  --vp-c-brand-1: #147460;
-  --vp-c-brand-2: #167b67;
-  --vp-c-brand-3: #198c74;
-  --vp-c-brand-soft: rgba(22, 123, 103, .1);
-  --vp-c-bg: #fcfcf9;
-  --vp-c-bg-alt: #f3f5f0;
-  --vp-c-bg-soft: #f0f3ee;
-  --vp-c-text-1: #202f2a;
-  --vp-c-text-2: #53625b;
-  --vp-c-text-3: #65746c;
-  --vp-c-divider: #dfe5dc;
+  --vp-c-brand-1: #0969da;
+  --vp-c-brand-2: #0550ae;
+  --vp-c-brand-3: #0969da;
+  --vp-c-brand-soft: rgba(9, 105, 218, .1);
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f6f8fa;
+  --vp-c-bg-soft: #f6f8fa;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-text-1: #1f2328;
+  --vp-c-text-2: #59636e;
+  --vp-c-text-3: #656d76;
+  --vp-c-divider: #d1d9e0;
+  --vp-c-border: #d1d9e0;
+  --vp-c-gutter: #d1d9e0;
+  --guide-button-bg: #0969da;
+  --guide-button-hover: #0550ae;
   --vp-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   --vp-font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --vp-sidebar-width: 276px;
@@ -17,17 +22,22 @@
   --guide-radius: 18px;
 }
 .dark {
-  --vp-c-brand-1: #79d6b9;
-  --vp-c-brand-2: #6ac9ae;
-  --vp-c-brand-3: #258770;
-  --vp-c-brand-soft: rgba(106, 201, 174, .12);
-  --vp-c-bg: #131c19;
-  --vp-c-bg-alt: #18241f;
-  --vp-c-bg-soft: #1e2c26;
-  --vp-c-text-1: #e5eee7;
-  --vp-c-text-2: #b2c2b7;
-  --vp-c-text-3: #91a598;
-  --vp-c-divider: #2b3c32;
+  --vp-c-brand-1: #58a6ff;
+  --vp-c-brand-2: #79c0ff;
+  --vp-c-brand-3: #1f6feb;
+  --vp-c-brand-soft: rgba(56, 139, 253, .12);
+  --vp-c-bg: #0d1117;
+  --vp-c-bg-alt: #010409;
+  --vp-c-bg-soft: #161b22;
+  --vp-c-bg-elv: #161b22;
+  --vp-c-text-1: #e6edf3;
+  --vp-c-text-2: #9198a1;
+  --vp-c-text-3: #9198a1;
+  --vp-c-divider: #30363d;
+  --vp-c-border: #30363d;
+  --vp-c-gutter: #30363d;
+  --guide-button-bg: #1f6feb;
+  --guide-button-hover: #0969da;
 }
 .VPNavBarTitle .title { font-weight: 750; letter-spacing: -.4px; }
 .VPNavBarTitle .logo { height: 30px; }
@@ -52,16 +62,16 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .hero-button { display: inline-flex; align-items: center; justify-content: center; gap: 24px; border-radius: 9px; padding: 12px 20px; font-size: 14px; font-weight: 600; transition: background .15s, transform .15s; }
 .hero-button:hover { transform: translateY(-2px); }
-.hero-button.primary { background: #167b67; color: white; }
-.hero-button.primary:hover { background: #116a58; }
+.hero-button.primary { background: var(--guide-button-bg); color: white; }
+.hero-button.primary:hover { background: var(--guide-button-hover); }
 .hero-button.secondary { border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); }
 .hero-button.secondary:hover { background: var(--vp-c-bg-soft); }
 .hero-foundation { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 25px; color: var(--vp-c-text-3); font-size: 11px; }
 .hero-foundation i { font-style: normal; opacity: .6; }
-.request-demo { min-width: 0; border: 1px solid var(--vp-c-divider); border-radius: var(--guide-radius); background: var(--vp-c-bg); overflow: hidden; box-shadow: 0 18px 44px -28px rgba(18, 53, 36, .28); }
+.request-demo { min-width: 0; border: 1px solid var(--vp-c-divider); border-radius: var(--guide-radius); background: var(--vp-c-bg); overflow: hidden; box-shadow: 0 18px 44px -28px rgba(31, 35, 40, .28); }
 .demo-topbar { display: flex; align-items: center; gap: 14px; background: var(--vp-c-bg-alt); border-bottom: 1px solid var(--vp-c-divider); padding: 14px 18px; font-size: 11px; color: var(--vp-c-text-2); }
 .terminal-dots { display: flex; gap: 4px; }
-.terminal-dots i { width: 6px; height: 6px; border-radius: 50%; background: #9cae9f; }
+.terminal-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--vp-c-text-3); }
 .demo-badge { margin-left: auto; font-size: 10px; color: var(--vp-c-brand-1); }
 .demo-tabs { display: flex; gap: 22px; margin: 0 22px; border-bottom: 1px solid var(--vp-c-divider); }
 .demo-tabs button { padding: 15px 0 11px; font-size: 12px; font-weight: 600; color: var(--vp-c-text-2); border-bottom: 2px solid transparent; }

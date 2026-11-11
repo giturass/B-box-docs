@@ -1,4 +1,7 @@
 import { test, expect, type Page } from '@playwright/test'
+import { resolveDeployment } from '../docs/.vitepress/deployment.mjs'
+
+const { base } = resolveDeployment()
 
 async function noOverflow(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true)
@@ -16,7 +19,7 @@ test('home demo, keyboard controls and getting started', async ({ page }, info) 
   await noOverflow(page)
   await page.screenshot({ path: info.outputPath('home-light.png'), fullPage: true })
   await page.locator('.hero-actions').getByRole('link', { name: /开始使用/ }).click()
-  await expect(page).toHaveURL(/\/B-box-docs\/guide\/quick-start\.html$/)
+  await expect(page).toHaveURL(new URL('guide/quick-start.html', info.project.use.baseURL).href)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('跑通第一条请求')
   expect(errors).toEqual([])
 })
@@ -29,9 +32,12 @@ test('Chinese search and script API search', async ({ page }) => {
   await expect(page.locator('.VPLocalSearchBox a.result').first()).toBeVisible()
   await page.locator('.VPLocalSearchBox a.result').first().click()
   await expect(page.locator('.vp-doc')).toBeVisible()
-  await expect(page).toHaveURL(/\/B-box-docs\/.+\.html/)
+  expect(new URL(page.url()).pathname.startsWith(base)).toBe(true)
+  await expect(page).toHaveURL(/\.html(?:#.*)?$/)
   await page.getByRole('button', { name: '搜索文档', exact: true }).click()
   await input.fill('$httpClient')
+  await expect(page.locator('.VPLocalSearchBox a.result').first()).toBeVisible()
+  await input.fill('TrustMe')
   await expect(page.locator('.VPLocalSearchBox a.result').first()).toBeVisible()
   await input.press('Escape')
   await expect(input).not.toBeVisible()
@@ -59,7 +65,7 @@ test('copyable JSON and downloadable examples', async ({ page, context, request 
   await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toContain('"http_rewrite"')
   const copied = JSON.parse(await page.evaluate(() => navigator.clipboard.readText()))
   expect(copied.experimental.http_rewrite.map_local[0].status).toBe(200)
-  for (const name of ['http-lab', 'mitm', 'rewrite', 'http-scripts', 'cron-cache']) {
+  for (const name of ['http-lab', 'mitm', 'rewrite', 'http-scripts', 'cron-cache', 'body-limits', 'empty-responses', 'grpc-scripts', 'remote-script']) {
     const response = await request.get(`examples/${name}.json`)
     expect(response.ok()).toBe(true)
     expect(await response.json()).toHaveProperty('experimental')
@@ -72,6 +78,10 @@ test('dark theme and narrow screens', async ({ page, isMobile }, info) => {
   await expect(page.locator('html')).toHaveClass(/dark/)
   await noOverflow(page)
   await page.screenshot({ path: info.outputPath('home-dark.png'), fullPage: true })
+  await page.goto('scripts/grpc.html')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('一元 gRPC 正文脚本')
+  await noOverflow(page)
+  await page.screenshot({ path: info.outputPath('grpc-dark.png'), fullPage: true })
   if (isMobile) {
     await page.setViewportSize({ width: 320, height: 740 })
     await noOverflow(page)
@@ -79,4 +89,13 @@ test('dark theme and narrow screens', async ({ page, isMobile }, info) => {
     await noOverflow(page)
     await page.screenshot({ path: info.outputPath('narrow-reference.png'), fullPage: true })
   }
+})
+
+test('missing pages return 404 and link home within the deployment', async ({ page }, info) => {
+  const response = await page.goto('missing-page.html')
+  expect(response?.status()).toBe(404)
+  await expect(page.getByText('这一页还没有到达', { exact: true })).toBeVisible()
+  await page.getByRole('link', { name: '返回首页', exact: true }).click()
+  await expect(page).toHaveURL(new URL('./', info.project.use.baseURL).href)
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('从一条请求开始')
 })

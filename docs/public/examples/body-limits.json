@@ -1,0 +1,11 @@
+{
+  "experimental": {
+    "http_rewrite": {
+      "max_request_body_bytes": 8388608,
+      "max_response_body_bytes": 2097152
+    },
+    "scripts": {
+      "max_body_bytes": 2097152
+    }
+  }
+}

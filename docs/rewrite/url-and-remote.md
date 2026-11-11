@@ -16,6 +16,8 @@ description: 使用 URL Rewrite 透明改写、返回重定向或拒绝请求，
 | `302` | 返回临时重定向 |
 | `307` | 返回临时重定向，客户端按 HTTP 语义保留方法和正文 |
 | `reject` | 返回 403 |
+| `reject-200` | 返回 200，正文为空 |
+| `reject-dict` | 返回 200，正文为 `{}`，Content-Type 为 `application/json` |
 
 ### 返回 307
 
@@ -64,7 +66,11 @@ description: 使用 URL Rewrite 透明改写、返回重定向或拒绝请求，
 }
 ```
 
-当前支持的 URL 动作为上表四种，不能直接照搬其他工具中的 `reject-200` 等动作名。
+需要返回空的成功响应时，可以使用下面的[空响应配置片段](/examples/empty-responses.json)：
+
+<<< @/public/examples/empty-responses.json
+
+`reject-200` 与 `reject-dict` 是 B-box 支持的迁移快捷动作，不改变 `reject` 的 403 行为，也不代表接受其他工具的所有动作。它们生成的响应仍会进入响应改写与脚本阶段。
 
 ## Map Remote
 

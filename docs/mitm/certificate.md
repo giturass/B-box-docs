@@ -1,5 +1,5 @@
 ---
-description: 在 Android 上生成 B-box MITM CA，安装用户证书或导出系统 CA 模块，并检查信任状态。
+description: 在 Android 上生成和安装 B-box MITM CA，检查信任状态，并使用 TrustMe 排查 SSL Pinning。
 ---
 
 # 生成与安装证书
@@ -8,7 +8,7 @@ HTTPS 解密需要目标客户端信任 B-box 生成的 CA。生成、导出、�
 
 ## 1. 生成 CA
 
-进入 **配置 → 编辑 → 高级配置 → MITM → MITM 证书**，点击生成 CA。页面会显示证书身份、SHA-256 和有效期。
+进入 **配置 → 编辑 → MITM → MITM 证书**，点击生成 CA。页面会显示证书身份、SHA-256 和有效期。
 
 根私钥保存在当前设备的 Android Keystore，不能导出。导出的 CRT 和系统 CA 模块只包含公钥证书；生成 CA 本身不会安装信任或启用解密。
 
@@ -43,6 +43,21 @@ B-box 不会自动调用 Root 注入证书。系统 CA 模块由 Root 管理器�
 | 握手后没有 HTTP 请求 | 查看日志；可能是客户端取消或信任策略，不能直接认定 pinning |
 
 `skip_server_cert_verify` 处理的是 **B-box → 上游** 的校验，不能修复 **目标 App → B-box** 的信任问题。
+
+## SSL Pinning 与 TrustMe
+
+目标 App 使用 SSL Pinning（证书固定校验），导致安装 CA 后仍拒绝调试连接时，推荐 [TrustMe](https://github.com/kirklin/TrustMe)。它是独立的 Android 模块，要求 **Android 8.0+，并已启用 LSPosed 或兼容 Xposed 框架**。
+
+按项目说明配置：
+
+1. 安装 TrustMe APK，在 LSPosed 管理器中启用模块。
+2. 将需要调试的目标 App 加入模块作用域。
+3. 强行停止并重新打开目标 App，再通过 B-box 发出新请求。
+4. 必要时在 TrustMe 中调整对应 hook 开关或打开日志，核对是否命中目标网络库。
+
+TrustMe 提供 OkHttp、Conscrypt、部分 Cronet、WebView 等 hook；具体覆盖以[项目说明](https://github.com/kirklin/TrustMe#hook-coverage)为准，不能保证覆盖所有原生 TLS 库或定制校验。B-box 的 CA、MITM 域名与流量路由仍需按前文配置。
+
+TrustMe 单独安装和维护，B-box 不内置它，也不会自动安装或启用 LSPosed。B-box 支持 Android 7.0+，并不意味着 TrustMe 也支持 Android 7。
 
 ## 重新生成与换设备
 

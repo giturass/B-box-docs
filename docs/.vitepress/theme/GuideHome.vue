@@ -74,6 +74,6 @@ const topics = [
       <a :href="withBase('/reference/troubleshooting.html')"><span>遇到问题？</span><strong>按现象查找排错路径</strong><span aria-hidden="true">↗</span></a>
       <a :href="withBase('/reference/sources.html')"><span>文档依据</span><strong>源码、版本与官方参考</strong><span aria-hidden="true">↗</span></a>
     </section>
-    <p class="home-version">功能说明依据 B-box 2026-11-05 源码整理。使用前请核对已安装版本。<a :href="withBase('/reference/sources.html')">查看版本说明 →</a></p>
+    <p class="home-version">功能说明依据 B-box 2026-11-11 源码整理。使用前请核对已安装版本。<a :href="withBase('/reference/sources.html')">查看版本说明 →</a></p>
   </div>
 </template>

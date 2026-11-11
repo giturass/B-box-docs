@@ -32,10 +32,11 @@ B-box 使用 sing-box JSON，并在自己的核心中扩展 MITM、HTTP 改写�
 | --- | --- |
 | 明文 HTTP | 可记录、改写和执行 HTTP 脚本 |
 | TLS 1.2/1.3 中的 HTTP/1.1 | 命中 MITM 且客户端信任时可处理 |
-| HTTP/2 | `h2: true` 时可 MITM，两端分别协商版本 |
+| HTTP/2 | `h2` 默认 true，两端分别协商版本；显式关闭时只接受 h2 的连接透传 |
 | 直接建立 TLS 的非 HTTP TCP | `tcp: true` 时转发和记录解密字节，不执行 HTTP 规则 |
 | WebSocket | 处理 HTTP 握手，升级后透传，不改写帧 |
-| SSE / gRPC 等流式内容 | 跳过正文处理，无需正文的规则仍可执行 |
+| 已知的一元 gRPC / gRPC-Web | 显式设置 `grpc_mode: "unary"`、`requires_body` 和 `binary_body` 后可处理单消息帧 |
+| SSE / 流式 RPC 等内容 | 跳过正文处理，无需正文的规则仍可执行 |
 | HTTP/3 / QUIC | 不解密；仅可尝试对命中流促使 TCP 回退 |
 | STARTTLS、真实 ECH、客户端证书认证、嵌套 CONNECT | 不在当前解密范围 |
 
@@ -44,6 +45,8 @@ B-box 使用 sing-box JSON，并在自己的核心中扩展 MITM、HTTP 改写�
 Android 用户 CA、系统 CA 和目标 App 自身的信任不是同一件事。证书页面显示已安装，只能说明当前进程看到相应证书；pinning、自有证书库和工作资料仍可能导致目标连接拒绝。
 
 当前 B-box 已移除旧 Root/eBPF 抓取和 Xposed/LSPosed 路径。MITM 使用设备 Keystore CA；系统证书模块通过 Magisk、KernelSU 或 APatch 安装，不自动注入。
+
+需要绕过目标 App 的 SSL Pinning 时，推荐独立工具 [TrustMe](https://github.com/kirklin/TrustMe)，要求 Android 8.0+ 和 LSPosed 或兼容框架。它按目标 App 作用域工作，兼容范围由该项目维护，不能据此推断 B-box 内置 Xposed 或所有应用都可解密。操作见 [SSL Pinning 与 TrustMe](../mitm/certificate.md#ssl-pinning-与-trustme)。
 
 ## 版本边界
 

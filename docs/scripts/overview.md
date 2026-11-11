@@ -41,7 +41,7 @@ JavaScript 用于表达声明式规则难以完成的逻辑，例如按请求内
 | --- | --- | --- |
 | `http` + `phase: request` | 匹配的 HTTP 请求阶段 | `$request` |
 | `http` + `phase: response` | 匹配的 HTTP 响应阶段 | `$request`、`$response` |
-| `cron` | 本地服务运行期间，日历表达式到期 | `$cronexp`、`$trigger`，没有请求/响应对象 |
+| `cron` | 本地服务运行期间，日历表达式到期 | `$cronexp`、`$script`，没有请求/响应对象 |
 
 同一个请求方向只执行 **首条匹配脚本**。把特殊规则放在宽泛规则前面；第一条失败不会尝试第二条。
 
@@ -53,7 +53,7 @@ JavaScript 用于表达声明式规则难以完成的逻辑，例如按请求内
 | `resource` | 引用 `scripts.resources` 字典中的源码资源 |
 | `script_path` | 相对实际配置目录的文件路径，或 HTTP(S) URL |
 
-每条脚本只选一种。源码上限 128 KiB。较长脚本建议用资源或文件维护，详见[文件与远程资源](../reference/resources.md)。
+每条脚本只选一种，源码不设固定容量上限。较长脚本可以通过资源页导入文件或使用 URL，详见[文件与远程资源](../reference/resources.md)。
 
 ## 每次都要调用 `$done`
 
@@ -63,7 +63,9 @@ JavaScript 用于表达声明式规则难以完成的逻辑，例如按请求内
 
 ## 默认执行条件
 
-每次执行使用独立 Goja JavaScript 环境。默认总时限为 5000 毫秒，资源加载、等待解释器、网络、定时器和执行都计入；HTTP 同时最多 4 个解释器，Cron 独立最多 2 个。
+每次执行使用独立 Goja JavaScript 环境，不设固定解释器数量配额。`timeout_ms` 缺省或为 `0` 时，总时限为 5000 毫秒；正整数设置毫秒期限，`-1` 不增加期限。资源加载、网络、定时器和执行共享该期限及服务取消。
+
+拦截正文与输出默认不设大小上限，可通过 `scripts.max_body_bytes` 或单条 HTTP 规则的同名字段设置；主动 HTTP 使用独立限额。见[默认值与限制](../reference/limits.md)。
 
 没有 Node.js、DOM、通知或完整 Surge 环境。标准 JavaScript 语法可以使用，但外部脚本依赖的宿主 API 必须逐项核对[脚本 API](./api.md)。
 

@@ -1,0 +1,23 @@
+{
+  "experimental": {
+    "scripts": {
+      "enabled": true,
+      "http": [
+        {
+          "name": "Remote response script",
+          "pattern": "^https://api\\.example\\.test/profile$",
+          "phase": "response",
+          "requires_body": true,
+          "resource": "profile-script"
+        }
+      ],
+      "resources": {
+        "profile-script": {
+          "data_type": "file",
+          "data": "https://resources.example.test/response.js",
+          "update_interval": 86400
+        }
+      }
+    }
+  }
+}

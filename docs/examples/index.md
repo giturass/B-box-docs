@@ -1,5 +1,5 @@
 ---
-description: 下载 B-box 的 HTTP Mock、MITM、改写、JavaScript 和 Cron 示例，并正确合并进 sing-box JSON。
+description: 下载 B-box 的 HTTP Mock、MITM、改写、JavaScript、gRPC 与 Cron 示例，并正确合并进 sing-box JSON。
 ---
 
 # 可下载示例
@@ -13,7 +13,11 @@ description: 下载 B-box 的 HTTP Mock、MITM、改写、JavaScript 和 Cron �
 | [http-lab.json](/examples/http-lab.json) | 完整演示配置 | 本机 2080 代理，HTTP Map Local；无需 CA、DNS 或上游服务器 |
 | [mitm.json](/examples/mitm.json) | `experimental.mitm` 片段 | 开启一个 HTTPS 域名的解密 |
 | [rewrite.json](/examples/rewrite.json) | `experimental.http_rewrite` 片段 | Header、URL、Map Remote、jq 和 Map Local |
+| [empty-responses.json](/examples/empty-responses.json) | `experimental.http_rewrite` 片段 | `reject-200` 空正文与 `reject-dict` 空 JSON |
+| [body-limits.json](/examples/body-limits.json) | 正文限制片段 | 为已有改写和脚本选择字节上限；不启用规则 |
 | [http-scripts.json](/examples/http-scripts.json) | `experimental.scripts` 片段 | 动态 Mock 与响应 JSON 改写；内嵌源码 |
+| [grpc-scripts.json](/examples/grpc-scripts.json) | MITM + 脚本片段 | 已知一元 gRPC 方法的单消息帧改写；内嵌源码 |
+| [remote-script.json](/examples/remote-script.json) | `experimental.scripts` 片段 | URL 资源引用与刷新间隔 |
 | [cron-cache.json](/examples/cron-cache.json) | `experimental.scripts` 片段 | Cron 获取响应，HTTP 脚本读取同一缓存 |
 
 浏览器可能直接显示 JSON，可使用浏览器保存或复制内容。
@@ -25,6 +29,7 @@ description: 下载 B-box 的 HTTP Mock、MITM、改写、JavaScript 和 Cron �
 | [response.js](/examples/response.js) | 响应阶段，`requires_body: true` |
 | [dynamic-mock.js](/examples/dynamic-mock.js) | 请求阶段，直接返回 Mock |
 | [cron-cache.js](/examples/cron-cache.js) | Cron，配置 `argument` 和存储命名空间 |
+| [grpc-unary.js](/examples/grpc-unary.js) | 响应阶段，启用 `grpc_mode: unary`、`requires_body` 与 `binary_body`；仅用于教程中的测试消息 |
 
 这些文件是对应 JSON 内嵌源码的可读版本。使用 `http-scripts.json` 不需要额外下载 JavaScript 文件；要改成 `script_path`，遵守[资源路径规则](../reference/resources.md)。
 
@@ -35,7 +40,7 @@ description: 下载 B-box 的 HTTP Mock、MITM、改写、JavaScript 和 Cron �
 3. 替换域名、映射地址、`argument` 与 `allowed_origins`；HTTPS 单独准备 CA 和 MITM 范围。
 4. 成功保存并应用到正在运行的本地服务，再发出新请求验证。
 
-下载示例的开关已按演示目的开启。应用内通过“新增”创建的样例则默认禁用，需要编辑 `disabled`。两种来源不要混淆。
+包含规则的下载示例已按演示目的开启相应开关；`body-limits.json` 只设置限额，不添加或启用规则。应用内通过“新增”创建的样例默认禁用，需要编辑 `disabled`。两种来源不要混淆。
 
 ## 查看规则组合
 

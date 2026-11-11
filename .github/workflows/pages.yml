@@ -16,8 +16,29 @@ concurrency:
 
 jobs:
   build:
+    name: Check ${{ matrix.target }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: pages
+            base: /B-box-docs/
+            origin: https://giturass.github.io
+            vercel: '0'
+            vercel_env: ''
+            vercel_host: ''
+          - target: vercel
+            base: /
+            origin: https://docs.example.test
+            vercel: '1'
+            vercel_env: production
+            vercel_host: docs.example.test
+    env:
+      VERCEL: ${{ matrix.vercel }}
+      VERCEL_ENV: ${{ matrix.vercel_env }}
+      VERCEL_PROJECT_PRODUCTION_URL: ${{ matrix.vercel_host }}
     permissions:
       contents: read
       pages: read
@@ -35,10 +56,12 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Check JavaScript examples
         run: node tools/check_scripts.mjs
+      - name: Check deployment settings
+        run: node --test tools/check_deployment.mjs
       - name: Build documentation
         run: npm run docs:build
       - name: Check generated links, anchors and assets
-        run: python3 tools/check_generated.py
+        run: python3 tools/check_generated.py --base '${{ matrix.base }}' --origin '${{ matrix.origin }}'
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Check desktop and mobile browsing
@@ -47,22 +70,22 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: browser-checks
+          name: browser-checks-${{ matrix.target }}
           path: |
             playwright-report/
             test-results/
           retention-days: 7
       - name: Configure Pages
-        if: github.event_name != 'pull_request'
+        if: matrix.target == 'pages' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
       - name: Upload Pages site
-        if: github.event_name != 'pull_request'
+        if: matrix.target == 'pages' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-24.04
     timeout-minutes: 10

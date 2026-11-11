@@ -1,4 +1,8 @@
 import { defineConfig } from '@playwright/test'
+import { resolveDeployment } from './docs/.vitepress/deployment.mjs'
+
+const { base } = resolveDeployment()
+const previewURL = 'http://127.0.0.1:4173' + base
 
 export default defineConfig({
   testDir: './tests',
@@ -7,7 +11,7 @@ export default defineConfig({
   retries: 0,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://127.0.0.1:4173/B-box-docs/',
+    baseURL: previewURL,
     browserName: 'chromium',
     locale: 'zh-CN',
     colorScheme: 'light',
@@ -20,7 +24,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run docs:preview -- --port 4173',
-    url: 'http://127.0.0.1:4173/B-box-docs/',
+    url: previewURL,
     reuseExistingServer: false,
     timeout: 60000,
   },

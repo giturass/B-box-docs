@@ -1,0 +1,36 @@
+{
+  "experimental": {
+    "mitm": {
+      "enabled": true,
+      "h2": true,
+      "hosts": [
+        "grpc.example.test"
+      ]
+    },
+    "scripts": {
+      "enabled": true,
+      "http": [
+        {
+          "name": "Unary settings response",
+          "pattern": "^https://grpc\\.example\\.test/example\\.Settings/Get$",
+          "phase": "response",
+          "requires_body": true,
+          "binary_body": true,
+          "grpc_mode": "unary",
+          "max_body_bytes": 1048576,
+          "timeout_ms": 5000,
+          "http_client": {
+            "allowed_origins": []
+          },
+          "resource": "grpc-unary.js"
+        }
+      ],
+      "resources": {
+        "grpc-unary.js": {
+          "data_type": "text",
+          "data": "// Reply { bool enabled = 1; } with enabled set to true.\nconst message = new Uint8Array([0x08, 0x01]);\nconst frame = new Uint8Array(5 + message.length);\n// The zero-initialized first byte marks an uncompressed message.\nnew DataView(frame.buffer).setUint32(1, message.length);\nframe.set(message, 5);\n$done({ body: frame });"
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
+import { resolveDeployment } from './deployment.mjs'
 
-const base = '/B-box-docs/'
-const origin = 'https://giturass.github.io'
+const { base, origin, noIndex } = resolveDeployment()
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -10,10 +10,11 @@ export default defineConfig({
   base,
   cleanUrls: false,
   lastUpdated: true,
-  sitemap: { hostname: origin + base },
+  sitemap: noIndex ? undefined : { hostname: origin + base },
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: base + 'favicon.svg' }],
-    ['meta', { name: 'theme-color', content: '#167b67' }],
+    ['meta', { name: 'theme-color', content: '#0969da', media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: '#1f6feb', media: '(prefers-color-scheme: dark)' }],
     ['meta', { property: 'og:locale', content: 'zh_CN' }],
     ['meta', { property: 'og:site_name', content: 'B-box 指南' }],
     ['meta', { property: 'og:type', content: 'website' }],
@@ -25,6 +26,7 @@ export default defineConfig({
       ['meta', { property: 'og:title', content: pageData.title + ' · B-box 指南' }],
       ['meta', { property: 'og:description', content: pageData.description || 'B-box 的 MITM、HTTP 改写与脚本使用指南。' }],
       ['meta', { property: 'og:url', content: origin + base + path }],
+      ...(noIndex ? [['meta', { name: 'robots', content: 'noindex, nofollow' }] as [string, Record<string, string>]] : []),
     ]
   },
   markdown: {
@@ -63,6 +65,7 @@ export default defineConfig({
       { text: 'JavaScript 与 Cron', items: [
         { text: '第一条脚本', link: '/scripts/overview' },
         { text: '请求、响应与动态 Mock', link: '/scripts/http' },
+        { text: '一元 gRPC 正文脚本', link: '/scripts/grpc' },
         { text: '脚本 API', link: '/scripts/api' },
         { text: 'Cron 定时任务', link: '/scripts/cron' },
         { text: '持久存储与共享数据', link: '/scripts/storage' },
@@ -74,6 +77,7 @@ export default defineConfig({
         { text: '兼容性说明', link: '/reference/compatibility' },
         { text: '常见问题与排错', link: '/reference/troubleshooting' },
         { text: '资料来源与版本', link: '/reference/sources' },
+        { text: '部署文档站', link: '/reference/deployment' },
       ] },
     ],
     socialLinks: [{ icon: 'github', link: 'https://github.com/giturass/B-box-docs', ariaLabel: '文档源码' }],

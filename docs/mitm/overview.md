@@ -22,7 +22,7 @@ MITM 让 B-box 在指定连接上终止客户端 TLS，再按配置连接上游�
 
 <<< @/public/examples/mitm.json
 
-保存并确认配置应用成功，让目标客户端重新建立连接。需要查看结果时，再到 **工具 → 请求** 开始记录并发出新请求。
+保存并确认配置应用成功，让目标客户端重新建立连接。需要查看结果时，再到 **工具 → 连接与请求** 开始记录并发出新请求。
 
 ## 页面选项和 JSON 对应关系
 
@@ -30,16 +30,18 @@ MITM 让 B-box 在指定连接上终止客户端 TLS，再按配置连接上游�
 | --- | --- | --- | --- |
 | 解密 HTTPS | `enabled` | `false` | MITM 总开关 |
 | 解密域名 | `hosts` | 空列表 | 空列表不解密；支持有序排除与通配符 |
-| HTTP/2 MITM | `h2` | `false` | 开启后两端分别协商 HTTP 版本；可能一端 h2、一端 HTTP/1.1 |
+| HTTP/2 MITM | `h2` | `true` | 两端分别协商 HTTP 版本；可能一端 h2、一端 HTTP/1.1 |
 | 跳过服务器证书校验 | `skip_server_cert_verify` | `false` | 只影响 B-box 对上游的校验，不能让目标 App 信任 B-box CA |
 | 解密非 HTTP TLS/TCP | `tcp` | `false` | 允许转发并记录解密后的非 HTTP TLS 字节流 |
 | QUIC 请求 TCP 回退 | `block_quic` | `true` | 对命中范围且能观察到名称的 QUIC 尝试促使客户端改用 TCP |
 
 `ports` 和 `packages` 可在 JSON 中追加，分别限制原始目的端口和应用；它们与 `hosts` 取交集。见[域名与范围匹配](./hosts.md)。
 
+HTTP/2 默认开启，以兼容只接受 h2 的 Android 客户端。已有配置中的显式 `h2: false` 仍然生效；此时只提供 h2 的连接原样透传，不会被降为 HTTP/1.1 或转为 TCP 解密。
+
 ## TCP 解密不是 HTTP 改写
 
-开启 `tcp` 后，确定为非 HTTP 的 TLS 内容按字节流转发，记录标为 `TLS/TCP`，可查看两个方向的有界正文前缀。这类流没有 HTTP 状态码、Header 或 Cookie，不执行 HTTP 改写和 HTTP 脚本，也不能导出 HAR/cURL。
+开启 `tcp` 后，确定为非 HTTP 的 TLS 内容按字节流转发，记录标为 `TLS/TCP`，可按记录设置保存两个方向的字节。这类流没有 HTTP 状态码、Header 或 Cookie，不执行 HTTP 改写和 HTTP 脚本，也不能导出 HAR/cURL。
 
 没有 ALPN 时，开启 TCP 解密会先识别完整 HTTP/1.x 请求行；识别为 HTTP 的流仍可进入正常 HTTP 处理。
 
@@ -51,8 +53,8 @@ B-box 不解密 HTTP/3。`block_quic` 只在 MITM 已启用、域名/端口/应�
 
 ## 支持边界
 
-支持 TLS 1.2/1.3、HTTP/1.1 和可选 HTTP/2。任意私有加密协议、STARTTLS、真实 ECH、客户端证书认证和嵌套 CONNECT 不在当前解密范围内。
+支持 TLS 1.2/1.3、HTTP/1.1 和默认开启的 HTTP/2。任意私有加密协议、STARTTLS、真实 ECH、客户端证书认证和嵌套 CONNECT 不在当前解密范围内。
 
-有证书固定校验或自有信任库的 App 可能拒绝连接。此时可将域名排除，或在目标客户端的受控测试环境中配置对应信任；安装系统 CA 也不等于所有 App 都会接受。
+有证书固定校验或自有信任库的 App 可能拒绝连接。可在目标客户端配置对应信任，或参考 [TrustMe 绕过 SSL Pinning](./certificate.md#ssl-pinning-与-trustme)；安装系统 CA 也不等于所有 App 都会接受。
 
 下一步：[域名与范围匹配](./hosts.md) · [记录、详情与导出](./capture.md)。

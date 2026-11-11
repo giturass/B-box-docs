@@ -22,19 +22,19 @@ B-box 的配置格式是 **sing-box JSON**。FlClash 风格的界面不改变配
 
 | 你想做什么 | 入口 | 控制对象 |
 | --- | --- | --- |
-| 解密指定 HTTPS 域名 | 配置 → 编辑 → 高级配置 → MITM | `experimental.mitm` |
-| 修改 Header、URL、正文或 Mock | 配置 → 编辑 → 高级配置 → HTTP 改写 | `experimental.http_rewrite` |
-| 编写请求、响应脚本或 Cron | 配置 → 编辑 → 高级配置 → 脚本 | `experimental.scripts` |
-| 保存和查看请求 | 工具 → 请求 | 本机请求记录 |
+| 解密指定 HTTPS 域名 | 配置 → 编辑 → MITM | `experimental.mitm` |
+| 修改 Header、URL、正文或 Mock | 配置 → 编辑 → HTTP 改写 | `experimental.http_rewrite` |
+| 编写请求、响应脚本或 Cron | 配置 → 编辑 → 脚本 | `experimental.scripts` |
+| 查看连接、保存和查看请求 | 工具 → 连接与请求 | 当前连接与本地抓取记录 |
 
 这四项独立控制。停止请求记录后，已启用的解密、改写和脚本仍随本地服务运行。关闭 HTTP 改写，也不会关闭独立的 MITM 或脚本。
 
 ## 界面只需了解这些
 
-- **仪表盘**：启动与停止本地服务，查看流量、连接等状态。
+- **仪表盘**：启动与停止本地服务，查看流量和代理组等状态；右上角进入设置。
 - **代理**：显示当前核心提供的代理组和节点。自动组由核心选择。
-- **配置**：导入或新建 sing-box JSON，选择配置，进入原始与高级编辑器。
-- **工具**：进入请求、日志和网络诊断等页面。
+- **配置**：导入或新建 sing-box JSON，选择配置；编辑页直接提供各分项及“打开配置内容”。
+- **工具**：进入连接与请求、日志和网络诊断等页面。
 
 本指南的 MITM、证书和请求记录操作针对 **本地服务**。远程会话不能管理本机证书或读取本机请求记录。
 
@@ -42,6 +42,6 @@ B-box 的配置格式是 **sing-box JSON**。FlClash 风格的界面不改变配
 
 从 [B-box 项目](https://github.com/giturass/B-box) 的 [Releases](https://github.com/giturass/B-box/releases) 查看可用 APK 与发布说明。项目声明的安装范围为 Android 7.0+、ARM64；具体以下载产物为准。
 
-本文档依据 2026-11-05 的 B-box 源码整理。源码功能可能领先于已安装 APK。若页面入口或字段不同，先看[资料来源与版本](../reference/sources.md)，再核对安装包对应的提交。
+本文档依据 2026-11-11 的 B-box 源码整理。源码功能可能领先于已安装 APK。若页面入口或字段不同，先看[资料来源与版本](../reference/sources.md)，再核对安装包对应的提交。
 
 继续：[跑通第一条请求](./quick-start.md)。

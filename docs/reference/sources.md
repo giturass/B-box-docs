@@ -10,9 +10,9 @@ description: B-box 指南的固定源码版本、功能依据、上游官方资�
 
 | 项目 | 核对版本 |
 | --- | --- |
-| B-box | [`4aba1933bbfea72bca42ee760a53de068c8fbeae`](https://github.com/giturass/B-box/tree/4aba1933bbfea72bca42ee760a53de068c8fbeae) |
-| 核对日期 | 2026-11-05 |
-| 文档所用分支 | 当时的 `newui` |
+| B-box | [`1006e00e2b24bd369b8c3f5ab08f057c192d8aae`](https://github.com/giturass/B-box/tree/1006e00e2b24bd369b8c3f5ab08f057c192d8aae) |
+| 核对日期 | 2026-11-11 |
+| 文档所用分支 | `newui` |
 | sing-box 核心基线 | `v1.15.0-alpha.13`，以该提交的 version.properties 为准 |
 | FlClash 界面参考 | v0.9.3；不作为核心版本号 |
 
@@ -26,19 +26,24 @@ description: B-box 指南的固定源码版本、功能依据、上游官方资�
 
 | 文档内容 | 依据 |
 | --- | --- |
-| 项目定位与安装范围 | [README](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/README.md) |
-| 核心扩展、默认值、执行顺序和限制 | [libbox.md](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox.md) |
-| 证书、Android 信任与配置生命周期 | [app.md](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/app.md) |
-| 高级配置与请求页入口 | [flclash.md](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/flclash.md) |
-| MITM 字段与域名规则 | [mitm_config.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/mitm_config.go)、[mitm_hosts.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/mitm_hosts.go) |
-| 改写字段与实现 | [rewrite_config.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/rewrite_config.go)、[rewrite.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/rewrite.go) |
-| 脚本字段与返回值 | [script_config.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/script_config.go)、[script.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/script.go) |
-| HTTP 客户端 | [script_http.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/script_http.go) |
-| Cron、存储与定时器 | [script_cron.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/script_cron.go)、[script_storage.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/script_storage.go)、[script_timers.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/script_timers.go) |
-| 外部资源 | [processing_resources.go](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/libbox/httpdebug/processing_resources.go) |
-| 示例参考 | [B-box examples](https://github.com/giturass/B-box/tree/4aba1933bbfea72bca42ee760a53de068c8fbeae/examples) |
+| 项目定位与安装范围 | [README](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/README.md) |
+| 核心扩展、默认值、执行顺序和限制 | [libbox.md](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox.md) |
+| 证书、Android 信任与配置生命周期 | [app.md](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/app.md) |
+| 配置编辑与连接请求入口 | [flclash.md](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/flclash.md) |
+| MITM 字段与域名规则 | [mitm_config.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/mitm_config.go)、[mitm_hosts.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/mitm_hosts.go) |
+| 改写字段与实现 | [rewrite_config.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/rewrite_config.go)、[rewrite.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/rewrite.go) |
+| 脚本字段与返回值 | [script_config.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script_config.go)、[script.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script.go) |
+| HTTP 客户端 | [script_http.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script_http.go) |
+| Cron、存储与定时器 | [script_cron.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script_cron.go)、[script_storage.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script_storage.go)、[script_timers.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script_timers.go) |
+| 外部资源 | [processing_resources.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/processing_resources.go) |
+| gRPC 单消息帧与 gzip 工具 | [grpc_body.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/grpc_body.go)、[script_utils.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/script_utils.go) |
+| 用户正文限额与缓冲记账 | [processing_limits.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/processing_limits.go)、[body_budget.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/body_budget.go) |
+| 记录设置、正文分页与导出 | [config.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/config.go)、[body_preview.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/body_preview.go)、[export.go](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/libbox/httpdebug/export.go) |
+| 统一请求页与正文卡片 | [requests.dart](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/flutter/lib/pages/requests.dart)、[captured_body.dart](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/flutter/lib/components/captured_body.dart) |
+| 本地资源导入与备份范围 | [BoxProfiles.kt](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/app/src/main/java/io/nekohasekai/sfa/flutter/BoxProfiles.kt)、[app.md 配置处理生命周期](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/app.md#配置处理生命周期) |
+| 示例参考 | [B-box examples](https://github.com/giturass/B-box/tree/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/examples) |
 
-本站示例按这些字段和行为编写，使用测试域名。原仓库提供的 Android/Go 验证记录见固定版本 [app.md](https://github.com/giturass/B-box/blob/4aba1933bbfea72bca42ee760a53de068c8fbeae/app.md)；文档站构建通过不替代 App 实机验证。
+本站示例按这些字段和行为编写，使用测试域名。原仓库提供的 Android/Go 验证记录见固定版本 [app.md](https://github.com/giturass/B-box/blob/1006e00e2b24bd369b8c3f5ab08f057c192d8aae/app.md)；文档站构建通过不替代 App 实机验证。
 
 ## 官方参考资料
 
@@ -48,13 +53,15 @@ description: B-box 指南的固定源码版本、功能依据、上游官方资�
 - Surge [HTTP Processing](https://manual.nssurge.com/http/overview.html)、[MITM](https://manual.nssurge.com/http/mitm.html)、[Host List](https://manual.nssurge.com/profile/host-list.html)、[JavaScript API](https://manual.nssurge.com/scripting/api.html)。这些资料用于理解参考语义，不能替代 B-box 的字段说明。
 - [Android Network Security Configuration](https://developer.android.com/privacy-and-security/security-config)，理解用户 CA 与应用信任。
 - [Magisk 模块指南](https://topjohnwu.github.io/Magisk/guides.html)、[KernelSU 模块指南](https://kernelsu.org/guide/module.html)。
+- SSL Pinning 排错推荐 [TrustMe](https://github.com/kirklin/TrustMe)，安装条件及 hook 范围按 [`f0226dd` 的 README](https://github.com/kirklin/TrustMe/blob/f0226dd613453e85b752135cc08910f71faf8eb7/README.md)核对。它是独立的 LSPosed / 兼容 Xposed 模块，使用步骤见[证书教程](../mitm/certificate.md#ssl-pinning-与-trustme)。
+- gRPC 官方 [HTTP/2 协议](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md)及 [gRPC-Web 协议](https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-WEB.md)。B-box 的具体支持范围以表中的实现为准。
 
 ## 文档站维护
 
 源码仓库：[giturass/B-box-docs](https://github.com/giturass/B-box-docs)。本站用 VitePress 1.6.4，中文搜索在浏览器本地运行。
 
-推送 `main` 后，GitHub Actions 检查 Markdown/示例引用、构建站点，并通过手机与桌面浏览器检查后部署 GitHub Pages；构建不在 Termux 本机执行。
+推送 `main` 后，GitHub Actions 检查 Markdown/示例引用，分别构建 GitHub Pages 子路径和 Vercel 根路径，并在手机与桌面浏览器中检查导航、搜索和下载。检查通过后部署 GitHub Pages；Vercel 可直接导入仓库部署。
 
-部署方式参考 [VitePress 1.6.4 部署说明](https://github.com/vuejs/vitepress/blob/v1.6.4/docs/en/guide/deploy.md)与 [GitHub Pages 自定义工作流](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
+操作步骤、域名设置与官方部署依据见[部署文档站](./deployment.md)。
 
 页面底部的“文档更新”表示该页在文档仓库的编辑时间，不能据此推断 App 功能刚刚被验证。内容基线始终以上方表格为准。
